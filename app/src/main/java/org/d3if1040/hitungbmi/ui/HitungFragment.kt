@@ -1,6 +1,7 @@
 package org.d3if1040.hitungbmi.ui
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.*
@@ -16,6 +17,11 @@ class HitungFragment : Fragment(){
 
     private lateinit var binding : FragmentHitungBinding
     private lateinit var kategoriBmi : KategoriBmi
+    private var isMale : Boolean = true
+    private var berat : String = ""
+    private var tinggi : String  = ""
+    private var bmi = 0f
+
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
@@ -33,20 +39,20 @@ class HitungFragment : Fragment(){
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentHitungBinding.inflate(layoutInflater, container, false)
         binding.button.setOnClickListener{ hitungBMI() }
-        binding.saranButton.setOnClickListener{ view: View -> view.findNavController().navigate(HitungFragmentDirections.actionHitungFragmentToSaranFragment(kategoriBmi)) }
+        binding.saranButton.setOnClickListener{ view: View -> view.findNavController().navigate(HitungFragmentDirections.actionHitungFragmentToSaranFragment(kategoriBmi, berat, tinggi, isMale, bmi)) }
         binding.shareButton.setOnClickListener{ shareData() }
         setHasOptionsMenu(true)
         return binding.root
     }
 
     private fun hitungBMI() {
-        val berat = binding.beratEditText.text.toString()
+        berat = binding.beratEditText.text.toString()
         if(TextUtils.isEmpty(berat)){
             Toast.makeText(context, R.string.berat_invalid, Toast.LENGTH_LONG).show()
             return
         }
 
-        val tinggi = binding.tinggiEditText.text.toString()
+        tinggi = binding.tinggiEditText.text.toString()
         if(TextUtils.isEmpty(tinggi)){
             Toast.makeText(context, R.string.tinggi_invalid, Toast.LENGTH_LONG).show()
             return
@@ -59,8 +65,8 @@ class HitungFragment : Fragment(){
             return
         }
 
-        val bmi = berat.toFloat() / (tinggiCm * tinggiCm)
-        val isMale = selectedId == R.id.priaRadioButton
+        bmi = berat.toFloat() / (tinggiCm * tinggiCm)
+        isMale = selectedId == R.id.priaRadioButton
         val kategori = getkategori(bmi, isMale)
 
         binding.bmiTextView.text = getString(R.string.bmi_x, bmi)
