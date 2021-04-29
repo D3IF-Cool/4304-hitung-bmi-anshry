@@ -1,14 +1,24 @@
 package org.d3if1040.hitungbmi.ui.histori
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
 import org.d3if1040.hitungbmi.R
 import org.d3if1040.hitungbmi.databinding.FragmentHistoriBinding
+import org.d3if1040.hitungbmi.db.BmiDb
 
 class HistoriFragment : Fragment() {
+
+    private val viewModel: HistoriViewModel by lazy {
+        val db = BmiDb.getInstance(requireContext())
+        val factory = HistoriViewModelFactory(db.dao)
+        ViewModelProvider(this, factory).get(HistoriViewModel::class.java)
+    }
 
     private lateinit var binding: FragmentHistoriBinding
     override fun onCreateView(
@@ -18,6 +28,14 @@ class HistoriFragment : Fragment() {
        binding = FragmentHistoriBinding.inflate(layoutInflater, container, false)
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewModel.data.observe(viewLifecycleOwner, {
+            Log.d("HistoriFragment", "Jumlah data: ${it.size}")
+        })
     }
 
 }

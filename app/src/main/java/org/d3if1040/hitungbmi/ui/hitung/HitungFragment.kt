@@ -71,11 +71,6 @@ class HitungFragment : Fragment(){
             binding.kategoriTextView.text = getString(R.string.kategori_x, getkategori(it.kategori))
             binding.buttonGroup.visibility = View.VISIBLE
         })
-
-        viewModel.data.observe(viewLifecycleOwner, {
-            if (it == null) return@observe
-            Log.d("HitungFragment", "Data tersimpan, ID = ${it.id}")
-        })
     }
 
     private fun hitungBMI() {
