@@ -3,24 +3,29 @@ package org.d3if1040.hitungbmi.ui.hitung
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import org.d3if1040.hitungbmi.R
 import org.d3if1040.hitungbmi.data.KategoriBmi
 import org.d3if1040.hitungbmi.databinding.FragmentHitungBinding
+import org.d3if1040.hitungbmi.db.BmiDb
 
 class HitungFragment : Fragment(){
 
-    private val viewModel: HitungViewModel by viewModels()
+    private val viewModel: HitungViewModel by lazy {
+        val db = BmiDb.getInstance(requireContext())
+        val factory = HitungViewModelFactory(db.dao)
+        ViewModelProvider(this, factory).get(HitungViewModel::class.java)
+    }
     private lateinit var binding : FragmentHitungBinding
     private var isMale : Boolean = true
     private var berat : String = ""
     private var tinggi : String  = ""
-    private var bmi = 0f
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
@@ -60,6 +65,11 @@ class HitungFragment : Fragment(){
             binding.kategoriTextView.text = getString(R.string.kategori_x, getkategori(it.kategori))
             binding.buttonGroup.visibility = View.VISIBLE
         })
+
+        viewModel.data.observe(viewLifecycleOwner, {
+            if (it == null) return@observe
+            Log.d("HitungFragment", "Data tersimpan, ID = ${it.id}")
+        })
     }
 
     private fun hitungBMI() {
@@ -87,18 +97,7 @@ class HitungFragment : Fragment(){
     }
 
     private fun shareData() {
-        val selectedId = binding.radioGroup.checkedRadioButtonId
-        val gender = if (selectedId == R.id.priaRadioButton)
-            getString(R.string.gender_pria)
-        else
-            getString(R.string.gender_wanita)
-        val message = getString(R.string.bagikan_template,
-                binding.beratEditText.text,
-                binding.tinggiEditText.text,
-                gender,
-                binding.bmiTextView.text,
-                binding.kategoriTextView.text
-        )
+        val message = ""
 
         val shareIntent = Intent(Intent.ACTION_SEND)
         shareIntent.setType("text/plain").putExtra(Intent.EXTRA_TEXT, message)
