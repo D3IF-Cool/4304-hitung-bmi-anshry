@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/hitungFragment"
-        android:name="org.d3if1040.hitungbmi.ui.HitungFragment"
+        android:name="org.d3if1040.hitungbmi.ui.hitung.HitungFragment"
         android:label="HitungFragment"
         tools:layout="@layout/fragment_hitung">
         <action
@@ -25,20 +25,6 @@
         <argument
             android:name="kategori"
             app:argType="org.d3if1040.hitungbmi.data.KategoriBmi" />
-        <argument
-            android:name="berat"
-            app:argType="string"
-            android:defaultValue="0" />
-        <argument
-            android:name="tinggi"
-            app:argType="string"
-            android:defaultValue="0" />
-        <argument
-            android:name="gender"
-            app:argType="boolean" />
-        <argument
-            android:name="bmi"
-            app:argType="float" />
     </fragment>
     <fragment
         android:id="@+id/aboutFragment"

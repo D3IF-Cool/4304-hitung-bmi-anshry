@@ -19,47 +19,11 @@ class SaranFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentSaranBinding.inflate(layoutInflater, container, false)
-        updateUI(args.kategori, args.berat, args.tinggi, args.gender)
-        binding.shareButton.setOnClickListener{ shareData() }
+        updateUI(args.kategori)
         return binding.root
     }
 
-    private fun shareData() {
-        val gender = if (args.gender)
-            getString(R.string.gender_pria)
-        else
-            getString(R.string.gender_wanita)
-        val kategori = when(args.kategori){
-            KategoriBmi.KURUS -> R.string.kurus
-            KategoriBmi.GEMUK -> R.string.gemuk
-            KategoriBmi.IDEAL -> R.string.ideal
-        }
-
-        val message = getString(R.string.bagikan_template,
-            args.berat,
-            args.tinggi,
-            gender,
-            args.bmi.toString(),
-            getString(kategori)
-        )
-
-        val shareIntent = Intent(Intent.ACTION_SEND)
-        shareIntent.setType("text/plain").putExtra(Intent.EXTRA_TEXT, message)
-        if(shareIntent.resolveActivity(requireActivity().packageManager) != null){
-            startActivity(shareIntent)
-        }
-    }
-
-    private fun updateUI(
-        kategori: KategoriBmi,
-        berat: String,
-        tinggi: String,
-        gender: Boolean
-    ){
-        val kelamin = if(gender) "Pria" else "Wanita"
-        binding.jenisKelamin.text = getString(R.string.gender_x, kelamin)
-        binding.tinggiBadan.text = getString(R.string.tinggi_x, tinggi)
-        binding.beratBadan.text = getString(R.string.berat_x, berat)
+    private fun updateUI(kategori: KategoriBmi){
         val actionBar = (requireActivity() as AppCompatActivity).supportActionBar
         when(kategori){
             KategoriBmi.KURUS -> {
