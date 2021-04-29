@@ -13,8 +13,6 @@
     <string name="gemuk">Gemuk</string>
     <string name="kategori_x">Kategori: %1$s</string>
     <string name="gender_x">Jenis Kelamin: %1$s</string>
-    <string name="tinggi_x">Tinggi: %1$s</string>
-    <string name="berat_x">Berat: %1$s</string>
     <string name="berat_invalid">Berat tidak boleh kosong!</string>
     <string name="tinggi_invalid">Tinggi tidak boleh kosong!</string>
     <string name="gender_invalid">Pilih jenis kelamin.</string>
@@ -32,4 +30,7 @@
     <string name="bagikan_template">%s</string>
     <string name="belum_ada_data">Belum ada data</string>
     <string name="histori">Histori</string>
+    <string name="berat_x">BB: %1$.1f</string>
+    <string name="tinggi_x">TB: %1$.1f</string>
+
 </resources>
